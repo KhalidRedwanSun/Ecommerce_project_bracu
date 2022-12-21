@@ -1,36 +1,39 @@
-const express = require('express')
+const express = require("express");
 const router = express.Router();
 
-
 const {
-    getProducts,
-    getAdminProducts,
-    newProduct,
-    getSingleProduct,
-    updateProduct,
-    deleteProduct,
-    createProductReview,
-    getProductReviews,
-    deleteReview
+  getProducts,
+  newProduct,
+  getSingleProduct,
+  updateProduct,
+  deleteProduct,
+  createProductReview,
+  getProductReviews,
+  deleteReview,
+} = require("../controllers/productController");
 
-} = require('../controllers/productController')
+const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
-const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
+router.route("/products").get(getProducts);
 
+// controller folder er productController.js file theke  getSingleProduct function ta import kora hocche
+router.route("/products/:id").get(getSingleProduct);
 
-router.route('/products').get(getProducts);
-router.route('/admin/products').get(getAdminProducts);
-router.route('/product/:id').get(getSingleProduct);
+// I have to post the new product data in database
+router
+  .route("/admin/product/new")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), newProduct);
 
-router.route('/admin/product/new').post(isAuthenticatedUser, authorizeRoles('admin'), newProduct);
+// Delete the product from database
+router
+  .route("/admin/product/:id")
+  .put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct)
+  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
 
-router.route('/admin/product/:id')
-    .put(isAuthenticatedUser, authorizeRoles('admin'), updateProduct)
-    .delete(isAuthenticatedUser, authorizeRoles('admin'), deleteProduct);
+router.route("/review").put(isAuthenticatedUser, createProductReview);
 
+router.route("/reviews").get(isAuthenticatedUser, getProductReviews);
 
-router.route('/review').put(isAuthenticatedUser, createProductReview)
-router.route('/reviews').get(isAuthenticatedUser, getProductReviews)
-router.route('/reviews').delete(isAuthenticatedUser, deleteReview)
+router.route("/reviews").delete(isAuthenticatedUser, deleteReview);
 
 module.exports = router;
