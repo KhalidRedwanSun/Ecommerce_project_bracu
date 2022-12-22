@@ -17,7 +17,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 router.route("/products").get(getProducts);
 
 // controller folder er productController.js file theke  getSingleProduct function ta import kora hocche
-router.route("/products/:id").get(getSingleProduct);
+router.route("/product/:id").get(getSingleProduct);
 
 // I have to post the new product data in database
 router
