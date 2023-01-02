@@ -1,0 +1,7 @@
+mongodb+srv://amazona:R0171607985614969@cluster0.p7bvohd.mongodb.net/amazona?retryWrites=true&w=majority
+
+
+
+
+
+mongodb+srv://amazona:<password>@cluster0.p7bvohd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
